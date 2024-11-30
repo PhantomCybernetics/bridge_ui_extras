@@ -1,0 +1,7 @@
+{
+    "port": 1234,
+    "ssl": {
+        "private": "ssl/private.key.pem",
+        "public": "ssl/public.cert.pem"
+    }
+}

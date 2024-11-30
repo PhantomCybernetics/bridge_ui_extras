@@ -1,0 +1,27 @@
+{
+  "name": "bridge_ui_extras",
+  "version": "1.0.0",
+  "description": "Examples of extending Phntm Bridge UI",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PhantomCybernetics/bridge_ui_extras.git"
+  },
+  "author": "Mirek Burkon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PhantomCybernetics/bridge_ui_extras/issues"
+  },
+  "homepage": "https://github.com/PhantomCybernetics/bridge_ui_extras#readme",
+  "dependencies": {
+    "comment-json": "^4.2.5",
+    "express": "^4.21.1",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "url": "^0.11.4"
+  }
+}

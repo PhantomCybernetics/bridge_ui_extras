@@ -4,3 +4,4 @@ config.jsonc
 ssl/*.pem
 ssl/*.crt
 *.swp
+config.json

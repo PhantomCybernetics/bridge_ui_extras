@@ -1,11 +1,11 @@
 import https from 'https';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import path from 'path';
 import express from 'express';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 import * as JSONC from 'comment-json';
 let configFname = __dirname + '/config.json';
@@ -21,6 +21,10 @@ console.log('Loaded config: ', CONFIG);
 
 if (!CONFIG.port) {
     console.error('Missing port in config');
+    process.exit(1);
+}
+if (!CONFIG.uiHost) {
+    console.error('Missing uiHost in config');
     process.exit(1);
 }
 if (!CONFIG.ssl) {
@@ -51,6 +55,24 @@ const HTTPS_SERVER_OPTIONS = {
 
 const webExpressApp = express();
 const webHttpServer = https.createServer(HTTPS_SERVER_OPTIONS, webExpressApp);
+
+webExpressApp.use(async (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", CONFIG.uiHost);
+
+    if (req.path.endsWith('.js')) {
+        const filePath = path.join(__dirname, 'examples', req.path);
+        fs.readFile(filePath, 'utf8', (err, content) => {
+            if (err) {
+                return res.sendStatus(404); // not found
+            }
+            content = content.replace(/%UI_HOST%/g, CONFIG.uiHost);
+            res.type('application/javascript')
+               .send(content);
+        });
+      } else {
+        next();
+      }
+});
 
 webExpressApp.use(express.static('examples'));
 

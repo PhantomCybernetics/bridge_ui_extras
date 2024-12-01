@@ -1,6 +1,8 @@
 import { InputDriver } from '%UI_HOST%/static/input/base-driver.js'
 // The %UI_HOST% will be replaced with uiHost from the config.json file by the attached node.js server
-// You can also replace it with https://bridge.phntm.io and then host this file statically
+// You can also replace it with https://bridge.phntm.io and then host this file statically,
+// only remember the Access-Control-Allow-Origin header must be set either to the UI host name
+// such as 'https://bridge.phntm.io' or to '*'
 
 export class ExampleCustomDriver extends InputDriver {
 

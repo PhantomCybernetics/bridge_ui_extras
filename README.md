@@ -27,3 +27,9 @@ If you are using a self-signed certificate, you need to install the public key i
 ```bash
 node server.js
 ```
+
+The files from the `examples` folder are now available at e.g.:
+
+```bash
+https://localhost:443/custom-input-driver.js
+```

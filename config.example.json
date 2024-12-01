@@ -1,5 +1,5 @@
 {
-    "port": 1234,
+    "port": 443, // the port this server listens on
     "uiHost": "https://bridge.phntm.io",
     "ssl": {
         "private": "ssl/private.key.pem",

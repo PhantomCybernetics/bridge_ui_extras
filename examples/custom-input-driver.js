@@ -1,11 +1,13 @@
 import { InputDriver } from '%UI_HOST%/static/input/base-driver.js'
+// The %UI_HOST% will be replaced with uiHost from the config.json file by the attached node.js server
+// You can also replace it with https://bridge.phntm.io and then host this file statically
 
 export class ExampleCustomDriver extends InputDriver {
 
     // the message type to generate
     // must be available to the Bridge node
     // (see Custom message & Service types)
-    msg_type = 'std_msgs/msg/Bool'; 
+    msg_type = 'std_msgs/msg/Bool';
 
     num_axes = 5;
     num_buttons = 5;

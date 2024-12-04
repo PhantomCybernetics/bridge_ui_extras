@@ -1,8 +1,4 @@
-import { CustomServiceInput } from '%UI_HOST%/static/input/custom-service-input.js'
-// The %UI_HOST% will be replaced with uiHost from the config.json file by the attached node.js server
-// You can also replace it with https://bridge.phntm.io and then host this file statically,
-// only remember the Access-Control-Allow-Origin header must be set either to the UI host name
-// such as 'https://bridge.phntm.io' or to '*'
+import { CustomServiceInput } from 'https://bridge.phntm.io/static/input/custom-service-input.js'
 
 // JQuery is available in this context via $
 

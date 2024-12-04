@@ -1,14 +1,9 @@
-import { InputDriver } from '%UI_HOST%/static/input/base-driver.js'
-// The %UI_HOST% will be replaced with uiHost from the config.json file by the attached node.js server
-// You can also replace it with https://bridge.phntm.io and then host this file statically,
-// only remember the Access-Control-Allow-Origin header must be set either to the UI host name
-// such as 'https://bridge.phntm.io' or to '*'
+import { InputDriver } from 'https://bridge.phntm.io/static/input/base-driver.js'
 
 export class ExampleCustomDriver extends InputDriver {
 
-    // the message type to generate
-    // must be available to the Bridge node
-    // (see Custom message & Service types)
+    // the message type to generate must be available to the Bridge node
+    // (see https://docs.phntm.io/bridge/basics/custom-message-types.html)
     msg_type = 'std_msgs/msg/Bool';
 
     num_axes = 5;

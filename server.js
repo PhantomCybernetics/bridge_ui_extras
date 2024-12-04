@@ -59,13 +59,16 @@ const webHttpServer = https.createServer(HTTPS_SERVER_OPTIONS, webExpressApp);
 webExpressApp.use(async (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", CONFIG.uiHost);
 
+    // the host name will be replaced with uiHost from the config.json file
+    // allowing to include these plugins in locally hosted versions of the Bridge UI
+
     if (req.path.endsWith('.js')) {
         const filePath = path.join(__dirname, 'examples', req.path);
         fs.readFile(filePath, 'utf8', (err, content) => {
             if (err) {
                 return res.sendStatus(404); // not found
             }
-            content = content.replace(/%UI_HOST%/g, CONFIG.uiHost);
+            content = content.replace('https://bridge.phntm.io', CONFIG.uiHost);
             res.type('application/javascript')
                .send(content);
         });

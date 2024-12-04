@@ -20,6 +20,7 @@ export class ServiceInput_ExampleSlider extends CustomServiceInput {
         let that = this;
         this.full_range = that.data.max - that.data.min;
 
+        // get theinitial value
         this.client.serviceCall(this.data.value_read_srv, null, true, (reply)=>{
             console.warn(id_service+' initial value is ', reply);
             if (reply.success) {
@@ -29,11 +30,6 @@ export class ServiceInput_ExampleSlider extends CustomServiceInput {
                 console.error('ServiceInput_ExampleSlider got error while reading '+this.data.value_read_srv, reply);
             }
         });
-
-        // TODO: only add once
-        let style = document.createElement('style');
-        style.textContent = this.getStyles();
-        document.head.appendChild(style);
     }
 
     // makes the service UI for the dropdown menu
@@ -75,17 +71,12 @@ export class ServiceInput_ExampleSlider extends CustomServiceInput {
         this.updateDisplay();
     }
 
-    // trigerred when other peer updates the input, update the UI
-    onValueChanged(new_value) {
-        
-    }
-
     posToVal(ev, send) {
         let span_width = this.slider_el.width();
         let click_x = ev.pageX - $(ev.target).offset().left;
         let percent = (click_x / span_width);
-        this.value = Math.round(this.data.min + (this.full_range * percent));
-        this.value = Math.max(Math.min(this.data.max, this.value), this.data.min);
+        let value = Math.round(this.data.min + (this.full_range * percent));
+        this.value = Math.max(Math.min(this.data.max, value), this.data.min);
 
         if (send) {
             let that = this;
@@ -107,8 +98,14 @@ export class ServiceInput_ExampleSlider extends CustomServiceInput {
         this.bar_el.css({'width': (percent * 100.0)+'%'});
     }
 
+    // trigerred when another peer updates this input
+    onValueChanged(msg) {
+        this.value = msg.data;
+        this.updateDisplay(); // update the UI
+    }
+
     // this generates CSS styles for the custom input
-    getStyles() {
+    static GetStyles() {
         return `
             .range-srv-input {
                 background-color: rgb(128 0 128 / 33%);

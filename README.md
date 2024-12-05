@@ -15,7 +15,7 @@ Install node.js and npm, then:
 git clone git@github.com:PhantomCybernetics/bridge_ui_extras.git bridge_ui_extras
 cd bridge_ui_extras
 npm init
-cp config.example.json config.json
+cp config.example.json config.json # examine the config, set server port, etc
 ```
 
 ## Install SSL certificates
@@ -33,8 +33,4 @@ If you are using a self-signed certificate, you need to install the public key i
 node server.js
 ```
 
-The files from the `examples` folder are now available at e.g.:
-
-```bash
-https://localhost:443/custom-input-driver.js
-```
+The files from the `examples` folder are now available at e.g. `https://localhost:443/custom-input-driver.js`

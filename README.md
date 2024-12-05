@@ -5,7 +5,7 @@ Examples of extending Phntm Bridge UI plus a simple node.js dev HTTPS server.
 You don't need to install anything to test the included examples. Simply link them to your
 robot's configuation using GitHub's static "raw" URLs.
 
-The included node.js server is useful when developping your own extensions, or when you have a local Bridge UI instance installed on a custom URL. The uiHost in the cofig.json file must match the UI's host name, so 'https://bridge.phntm.io' will be replaced for what ever you set it it before serving the static .js files.
+The included node.js server is useful when developping your own extensions, or when you have a local Bridge UI instance installed on a custom URL. The uiHost in its cofig.json must match the actual host name of the UI, so `https://bridge.phntm.io` will be replaced with whatever you set it to before the static .js files get served.
 
 ## Install the dev server
 

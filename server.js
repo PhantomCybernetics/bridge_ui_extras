@@ -27,34 +27,36 @@ if (!CONFIG.uiHost) {
     console.error('Missing uiHost in config');
     process.exit(1);
 }
-if (!CONFIG.ssl) {
-    console.error('Missing ssl in config');
-    process.exit(1);
-}
-if (!CONFIG.ssl.private) {
-    console.error('Missing ssl.private in config');
-    process.exit(1);
-}
-if (!CONFIG.ssl.public) {
-    console.error('Missing ssl.public in config');
-    process.exit(1);
-}
-if (!fs.existsSync(CONFIG.ssl.private)) {
-    console.error(`Private key not found at ${CONFIG.ssl.private}`);
-    process.exit(1);
-}
-if (!fs.existsSync(CONFIG.ssl.public)) {
-    console.error(`Public key not found at ${CONFIG.ssl.public}`);
-    process.exit(1);
-}
-
-const HTTPS_SERVER_OPTIONS = {
-    key: fs.readFileSync(CONFIG.ssl.private),
-    cert: fs.readFileSync(CONFIG.ssl.public),
-};
 
 const webExpressApp = express();
-const webHttpServer = https.createServer(HTTPS_SERVER_OPTIONS, webExpressApp);
+let webServer = null;
+let SSL = false;
+if (CONFIG.ssl) {
+    SSL = true;
+    if (!CONFIG.ssl.private) {
+        console.error('Missing ssl.private in config');
+        process.exit(1);
+    }
+    if (!CONFIG.ssl.public) {
+        console.error('Missing ssl.public in config');
+        process.exit(1);
+    }
+    if (!fs.existsSync(CONFIG.ssl.private)) {
+        console.error(`Private key not found at ${CONFIG.ssl.private}`);
+        process.exit(1);
+    }
+    if (!fs.existsSync(CONFIG.ssl.public)) {
+        console.error(`Public key not found at ${CONFIG.ssl.public}`);
+        process.exit(1);
+    }
+
+    const HTTPS_SERVER_OPTIONS = {
+        key: fs.readFileSync(CONFIG.ssl.private),
+        cert: fs.readFileSync(CONFIG.ssl.public),
+    };
+    
+    webServer = https.createServer(HTTPS_SERVER_OPTIONS, webExpressApp);
+}
 
 webExpressApp.use(async (req, res, next) => {
     if (CONFIG.uiHost == 'auto')
@@ -90,5 +92,12 @@ webExpressApp.use(async (req, res, next) => {
 
 webExpressApp.use(express.static('examples'));
 
-webHttpServer.listen(CONFIG.port);
-console.log(`HTTPS server listening on port ${CONFIG.port}`);
+if (SSL) {
+    webServer.listen(CONFIG.port, () => {
+        console.log(`HTTPS server listening on port ${CONFIG.port}`);
+    });
+} else {
+    webExpressApp.listen(CONFIG.port, () => {
+        console.log(`HTTP server listening on port ${CONFIG.port}`);
+    });
+}

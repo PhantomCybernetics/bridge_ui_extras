@@ -48,6 +48,8 @@ cd ssl
 ```
 This will produce ssl/private.key.pem and ssl/public.cert.pem. You will need to install the public certificate to your operating system for the web browser to trust it.
 
+If you're using AWS load balander that terminates SSL encryption, handles certificates and forwards unencrypted requests to the backend over HTTP, remove the `ssl` property from the config.json and the server will start in HTTP mode listening on your specified port.
+
 ## Run the server
 ```bash
 node server.js

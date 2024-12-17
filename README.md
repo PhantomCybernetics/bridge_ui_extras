@@ -1,15 +1,33 @@
 # Bridge UI Extras
 
-Examples of extending Phntm Bridge UI plus a simple node.js dev HTTPS server.
+Examples of extending Phntm Bridge UI plus a simple Node.js HTTPS server.
 
-You don't need to install anything to test the included examples. Simply link them to your
-robot's configuation using GitHub's static "raw" URLs.
+You don't need to install anything to test the included examples. Files from the ./examples folder 
+are available via https://ui-extras.phntm.io (e.g. https://ui-extras.phntm.io/custom-service-slider-widget.js).
 
-The included node.js server is useful when developping your own extensions, or when you have a local Bridge UI instance installed on a custom URL. The uiHost in its cofig.json must match the actual host name of the UI, so `https://bridge.phntm.io` will be replaced with whatever you set it to before the static .js files get served.
+The provided Node.js server sends correct Access-Control-Allow-Origin header for each served file
+to make sure the Web UI can successfully include it. This is either '*' (when uiHost in the config.json is set to 'auto'), or 'https://your-ui-host.tld' when uiHost is set to an exact hostname.
 
-## Install the dev server
+Since files are imported into the Web UI from custom domains, you need to refer to libraries of
+the Web UI using their full URL (e.g. `import { InputDriver } from 'https://bridge.phntm.io/static/input/base-driver.js'`). If you're hosting a develoment version of the Web UI on a custom domain, this server also replaces 'https://bridge.phntm.io' with your specified host name. If you set uiHost in the config to 'auto', the server tries to detect the UI's domain automatically
+from the 'origin' header of each request. However, this may not always work with browsers that don't send this header.
 
-Install node.js and npm, then:
+> [!TIP]
+> If you don't host your own Web UI, simply leave the uiHost to 'https://bridge.phntm.io'.
+
+> [!WARNING]
+> Using uiHost='auto' in the cofig.json is not recommended in production where you should always specify the exact domain
+> of the Web UI you are targeting, such as 'https://bridge.phntm.io'.
+
+## Install the Node.js Server
+
+Install node.js and npm
+
+```bash
+sudo apt install nodejs npm
+```
+
+then:
 
 ```bash
 git clone git@github.com:PhantomCybernetics/bridge_ui_extras.git bridge_ui_extras
@@ -19,14 +37,15 @@ cp config.example.json config.json # examine the config, set server port, etc
 ```
 
 ## Install SSL certificates
-If you want to use a self-signed certificate:
+
+The recommended way to do this is to use (Certbot)[https://certbot.eff.org/] and Let's Encrypt.
+
+You can also use a self-signed certificate using openssl:
 ```bash
 cd ssl
 ./gen.sh
 ```
-This will produce ssl/private.key.pem and ssl/public.cert.pem.
-
-If you are using a self-signed certificate, you need to install the public key in your operating system for the browser to trust it.
+This will produce ssl/private.key.pem and ssl/public.cert.pem. Then you need to install the public key on your operating system for the web browser to trust it.
 
 ## Run the server
 ```bash

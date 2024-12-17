@@ -57,7 +57,10 @@ const webExpressApp = express();
 const webHttpServer = https.createServer(HTTPS_SERVER_OPTIONS, webExpressApp);
 
 webExpressApp.use(async (req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", CONFIG.uiHost);
+    if (CONFIG.uiHost == 'auto')
+        res.setHeader("Access-Control-Allow-Origin", '*'); // allow all 
+    else 
+        res.setHeader("Access-Control-Allow-Origin", CONFIG.uiHost);
 
     // the host name will be replaced with uiHost from the config.json file
     // allowing to include these plugins in locally hosted versions of the Bridge UI
@@ -68,7 +71,15 @@ webExpressApp.use(async (req, res, next) => {
             if (err) {
                 return res.sendStatus(404); // not found
             }
-            content = content.replace('https://bridge.phntm.io', CONFIG.uiHost);
+            let replaceTarget = null;
+            let origin = req.get('origin'); // make sure your brosers sends origin in 'auto' mode
+            if (origin && CONFIG.uiHost == 'auto') {
+                replaceTarget = origin;
+            } else if (CONFIG.uiHost != 'auto') {
+                replaceTarget = CONFIG.uiHost;
+            }
+            if (replaceTarget)
+                content = content.replace('https://bridge.phntm.io', replaceTarget);
             res.type('application/javascript')
                .send(content);
         });

@@ -1,6 +1,6 @@
 {
     "port": 443, // the port this server listens on
-    "uiHost": "https://bridge.phntm.io", // host name of the targeted UI
+    "uiHost": "https://bridge.phntm.io", // host name of the targeted Web UI or 'auto'
     "ssl": {
         "private": "ssl/private.key.pem",
         "public": "ssl/public.cert.pem"

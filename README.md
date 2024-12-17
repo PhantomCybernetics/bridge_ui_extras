@@ -33,7 +33,7 @@ then:
 ```bash
 git clone git@github.com:PhantomCybernetics/bridge_ui_extras.git bridge_ui_extras
 cd bridge_ui_extras
-npm init
+npm install
 cp config.example.json config.json # examine the config, set server port, etc
 ```
 

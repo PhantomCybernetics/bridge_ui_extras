@@ -56,3 +56,41 @@ node server.js
 ```
 
 The files from the `examples` folder whould be available at e.g. `https://localhost:443/custom-input-driver.js`
+
+## Add as a system service
+```bash
+sudo vim /etc/systemd/system/phntm_bridge_ui_extras.service
+```
+
+...and paste:
+
+```
+[Unit]
+Description=phntm bridge ui extras service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /home/ubuntu/bridge_ui_extras/server.js
+Restart=always
+User=root
+Environment=NODE_ENV=production
+WorkingDirectory/home/ubuntu/bridge_ui_extras/
+StandardOutput=append:/var/log/bridge_ui_extras.log
+StandardError=append:/var/log/bridge_ui_extras.err.log
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Reload systemctl daemon
+
+```bash
+sudo systemctl daemon-reload
+```
+
+Launch service & install
+
+```bash
+sudo systemctl start phntm_bridge_ui_extras.service
+sudo systemctl enable phntm_bridge_ui_extras.service # will launch on boot
+```

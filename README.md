@@ -55,7 +55,7 @@ If you're using AWS load balander that terminates SSL encryption, handles certif
 node server.js
 ```
 
-The files from the `examples` folder whould be available at e.g. `https://localhost:443/custom-input-driver.js`
+The files from the `examples` folder should be available at e.g. `https://localhost:443/custom-input-driver.js`
 
 ## Add as a system service
 ```bash

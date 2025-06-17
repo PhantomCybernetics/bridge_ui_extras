@@ -20,6 +20,10 @@ export class ServiceInput_ExampleSlider extends CustomServiceInput {
         this.client.serviceCall(this.data.value_read_srv, null, true, (reply)=>{
             console.warn(id_service+' initial value is ', reply);
             if (reply.success) {
+                if (reply.data === undefined) {
+                    console.error("Initial value service reply "+this.data.value_read_srv+" missing 'data' attribute: ", reply);
+                    return;
+                }
                 that.value = reply.data;
                 that.makeMenuControls();
             } else {
@@ -96,6 +100,10 @@ export class ServiceInput_ExampleSlider extends CustomServiceInput {
 
     // trigerred when another peer updates this input
     onValueChanged(msg) {
+        if (msg.data === undefined) {
+            console.error("No 'data' attributed provided in onValueChanged");
+            return;
+        }
         this.value = msg.data;
         this.updateDisplay(); // update the UI
     }

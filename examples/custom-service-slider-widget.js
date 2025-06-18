@@ -9,25 +9,26 @@ export class ServiceInput_ExampleSlider extends CustomServiceInput {
     slider_el = null;
     label_el = null;
     bar_el = null;
+    float = false;
+    float_decimals = 2;
 
     constructor(id_service, custom_data, client) {
         super(id_service, custom_data, client);
 
         let that = this;
         this.full_range = that.data.max - that.data.min;
+        this.float = custom_data.float ? true : false;
+        if (custom_data.float_decimals !== undefined)
+            this.float_decimals = custom_data.float_decimals;
 
-        // get theinitial value
+        // get the initial value
         this.client.serviceCall(this.data.value_read_srv, null, true, (reply)=>{
             console.warn(id_service+' initial value is ', reply);
-            if (reply.success) {
-                if (reply.data === undefined) {
-                    console.error("Initial value service reply "+this.data.value_read_srv+" missing 'data' attribute: ", reply);
-                    return;
-                }
+            if (reply.data !== undefined) {
                 that.value = reply.data;
                 that.makeMenuControls();
             } else {
-                console.error('ServiceInput_ExampleSlider got error while reading '+this.data.value_read_srv, reply);
+                console.error("Initial value service reply "+this.data.value_read_srv+" missing 'data' attribute: ", reply);
             }
         });
     }
@@ -75,7 +76,9 @@ export class ServiceInput_ExampleSlider extends CustomServiceInput {
         let span_width = this.slider_el.width();
         let click_x = ev.pageX - $(ev.target).offset().left;
         let percent = (click_x / span_width);
-        let value = Math.round(this.data.min + (this.full_range * percent));
+        let value = this.data.min + (this.full_range * percent);
+        if (!this.float)
+            value = Math.round(value);
         this.value = Math.max(Math.min(this.data.max, value), this.data.min);
 
         if (send) {
@@ -94,7 +97,11 @@ export class ServiceInput_ExampleSlider extends CustomServiceInput {
     updateDisplay() {
         let percent = (this.value - this.data.min) /  this.full_range;
 
-        this.label_el.html(this.value.toLocaleString('en-US'));
+        if (this.float)
+            this.label_el.html(this.value.toLocaleString('en-US', {minimumFractionDigits: this.float_decimals, maximumFractionDigits: this.float_decimals}));
+        else
+            this.label_el.html(this.value.toLocaleString('en-US'));
+
         this.bar_el.css({'width': (percent * 100.0)+'%'});
     }
 

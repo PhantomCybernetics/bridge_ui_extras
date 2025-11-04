@@ -76,7 +76,7 @@ ExecStart=/usr/bin/node /home/ubuntu/bridge_ui_extras/server.js
 Restart=always
 User=root
 Environment=NODE_ENV=production
-WorkingDirectory/home/ubuntu/bridge_ui_extras/
+WorkingDirectory=/home/ubuntu/bridge_ui_extras/
 StandardOutput=append:/var/log/bridge_ui_extras.log
 StandardError=append:/var/log/bridge_ui_extras.err.log
 

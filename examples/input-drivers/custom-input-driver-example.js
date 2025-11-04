@@ -1,13 +1,16 @@
 import { InputDriver } from 'https://bridge.phntm.io/static/input/base-driver.js'
 
-export class ExampleCustomDriver extends InputDriver {
+export class ExampleCustomDriver extends InputDriver { // must be a subclass of InputDriver
 
     // the message type to generate must be available to the Bridge node
     // (see https://docs.phntm.io/bridge/basics/custom-message-types.html)
     msg_type = 'std_msgs/msg/Bool';
 
-    num_axes = 5;
-    num_buttons = 5;
+    // mandatory driver id (this is how you refer to the driver in bridge-client-config.yaml)
+    id_driver = "Example Driver";
+
+    num_axes = 5; // number of mappable axes to create
+    num_buttons = 5; // number of mappable buttons to create
 
     // create named axes to allow mapping input to
     getAxes() { 

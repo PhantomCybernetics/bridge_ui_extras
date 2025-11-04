@@ -1,0 +1,16 @@
+/* makes the background blue with a repeating image loaded from here */
+BODY {
+    background-color: #000e4b;
+    background-image: url('./phantom-cybernetics-logo-white.svg');
+    background-size: 1380px;
+}
+
+/* makes the log widget's background red */
+.panel_widget.log {
+    background: rgb(51, 0, 0);
+}
+
+/* makes the laser widget's background green */
+.panel_widget.laser_scan {
+    background-color: rgb(0, 44, 0);
+}

@@ -67,7 +67,7 @@ webExpressApp.use(async (req, res, next) => {
     // the host name will be replaced with uiHost from the config.json file
     // allowing to include these plugins in locally hosted versions of the Bridge UI
 
-    if (req.path.endsWith('.js')) {
+    if (req.path.endsWith('.js') || req.path.endsWith('.css')) {
         const filePath = path.join(__dirname, 'examples', req.path);
         fs.readFile(filePath, 'utf8', (err, content) => {
             if (err) {
@@ -82,15 +82,21 @@ webExpressApp.use(async (req, res, next) => {
             }
             if (replaceTarget)
                 content = content.replace('https://bridge.phntm.io', replaceTarget);
-            res.type('application/javascript')
-               .send(content);
+            let mimeType = req.path.endsWith('.js') ? 'application/javascript' : 'text/css'; // important!
+            res.type(mimeType);
+            res.send(content);
         });
-      } else {
+    } else {
         next();
-      }
+    }
 });
 
 webExpressApp.use(express.static('examples'));
+
+webExpressApp.get("/", async function (req, res) {
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.send("Ohi, this is Bridge UI Extras server");
+});
 
 if (SSL) {
     webServer.listen(CONFIG.port, () => {

@@ -1,0 +1,35 @@
+.range-srv-input {
+    background-color: rgb(128 0 128 / 33%);
+    color: white;
+    padding: 0px 0px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 220px;
+    overflow: hidden;
+}
+
+/* make the input narrower inside the touchscreen side menu */
+.hamburger .range-srv-input {
+    width: 120px; 
+}
+
+.range-srv-input .range-label {
+    position: absolute;
+    pointer-events: none;
+    z-index: 2;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    text-align: center;
+}
+
+.range-srv-input .range-bar {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    left: 0px;
+    top: 0px;
+    width: 0%;
+    height: 100%;
+    background-color: blue;
+}

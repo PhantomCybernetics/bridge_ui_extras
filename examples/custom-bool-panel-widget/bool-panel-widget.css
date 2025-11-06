@@ -1,0 +1,53 @@
+/* preload graphics */
+/* a special element is created in the DOM for every CSS include */
+/* ID of this element is "#preloader-CSS_FILE_NAME_BASE" (same case, no extension) */
+/* use it to preload your graphics before panel it created */
+#preloader-bool-panel-widget::after {
+	position: absolute;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+	z-index: -1;
+	content:
+		url("./icon-on.svg")
+        url("./icon-off.svg")
+        ;
+}
+
+/* background color of the widget */
+.panel_widget.bool-test {
+    background-color: #920000ff;
+}
+
+.panel_widget.bool-test .label {
+    color: #fff;
+    font-size: 20cqw;
+    top: 50%;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    vertical-align: bottom;
+    display: inline-block;
+    line-height: 1em;
+    margin-top: -0.5em;
+}
+
+.panel_widget.bool-test .icon {
+    position: absolute;
+    left: 0px;
+    bottom: 0%;
+    width: 100%;
+    height: 40%;
+    background-position: center;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    opacity: 0.3;
+}
+
+.panel_widget.bool-test .icon.on {
+    background-image: url(./icon-on.svg);
+}
+
+.panel_widget.bool-test .icon.off {
+    background-image: url(./icon-off.svg);
+}

@@ -1,4 +1,4 @@
-import { CustomServiceInput } from 'https://bridge.phntm.io/static/input/custom-service-input.js'
+import { CustomServiceInput } from 'static/input/custom-service-input.js'
 
 // JQuery is available in this context via $
 

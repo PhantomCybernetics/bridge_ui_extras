@@ -1,4 +1,4 @@
-import { SingleTypePanelWidgetBase } from 'https://bridge.phntm.io/static/widgets/inc/single-type-widget-base.js'
+import { SingleTypePanelWidgetBase } from 'static/widgets/inc/single-type-widget-base.js'
 
 export class CustomBoolPanelWidget extends SingleTypePanelWidgetBase {
 

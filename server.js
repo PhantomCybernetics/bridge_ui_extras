@@ -81,7 +81,7 @@ webExpressApp.use(async (req, res, next) => {
                 replaceTarget = CONFIG.uiHost;
             }
             if (replaceTarget)
-                content = content.replace('https://bridge.phntm.io', replaceTarget);
+                content = content.replaceAll('https://bridge.phntm.io', replaceTarget);
             let mimeType = req.path.endsWith('.js') ? 'application/javascript' : 'text/css'; // important!
             res.type(mimeType);
             res.send(content);

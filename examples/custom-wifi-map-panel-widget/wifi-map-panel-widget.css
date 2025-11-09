@@ -1,0 +1,40 @@
+/* preload graphics */
+/* a special element is created in the DOM for every CSS include */
+/* ID of this element is "#preloader-CSS_FILE_NAME_BASE" (same case, no extension) */
+/* use it to preload your graphics before panel it created */
+#preloader-wifi-map-panel-widget::after {
+	position: absolute;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+	z-index: -1;
+	content:
+		url("./arrow.png")
+        ;
+}
+
+.panel_widget.wifi-map {
+	background-color: #072038;
+    height: 100%;
+    position: relative;
+}
+
+.panel_widget.wifi-map .container {
+    position: absolute;
+}
+
+.panel_widget.wifi-map SVG {
+    /* background-color: #00000031; */
+    position: absolute;
+}
+
+.panel_widget.wifi-map .arrow {
+    position: absolute;
+	z-index: 3;
+	display: none; /* show on 1st render */
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+    background-image: url('./arrow.png');
+    background-size: 20px;
+}

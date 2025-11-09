@@ -4,31 +4,32 @@ export class CustomBoolPanelWidget extends SingleTypePanelWidgetBase {
 
     static handled_msg_types = [ 'std_msgs/msg/Bool' ];
 
+    static DEFAULT_COLOR_TRUE = '#00ff00';
+    static DEFAULT_COlOR_FALSE = '#ff0000';
+
     constructor(panel, topic) {
         super(panel, topic, 'bool-test');
 
         this.state = false;
         this.initialized = false;
-        this.color_true = '#00ff00'; // defaults overwritten with topic config
-        this.color_false = '#ff0000';
+       
         this.label_el = $('<span class="label"></span>');
         this.icon_el = $('<span class="icon"></span>');
         this.widget_el.append([ this.label_el, this.icon_el ]);
         this.enable_visual = this.panel.getPanelVarAsBool('vis', true); // get value from the panel vars, default is true
 
-        console.log('CustomBoolPanelWidget constructor  ', Date.now());
+        this.color_true = CustomBoolPanelWidget.DEFAULT_COLOR_TRUE; // defaults overwritten with topic config
+        this.color_false = CustomBoolPanelWidget.DEFAULT_COlOR_FALSE;
     }
 
     onTopicConfig(config) {
-        console.log('CustomBoolPanelWidget onTopicConfig', Date.now(), config);
+        console.log('CustomBoolPanelWidget got '+this.topic+' config:', config);
         this.initialized = true;
         if (config) {
             if (config['color_true'])
                 this.color_true = config['color_true'];
             if (config['color_false'])
                 this.color_false = config['color_false'];
-
-            
         }
         this.setState();
     }
@@ -40,7 +41,7 @@ export class CustomBoolPanelWidget extends SingleTypePanelWidgetBase {
 
     setState() {
         if (!this.initialized )
-            return; // wait for config
+            return; // wait for topic config
 
         if (!this.enable_visual)
             this.icon_el.css('display', 'none');

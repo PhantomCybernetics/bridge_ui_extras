@@ -11,34 +11,30 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
     static SIGNAL_LAYER = 0;
     static POSE_LAYER = 1;
 
+	static COLOR_WIFI_MAX = new THREE.Color('#0000ff');
+	static COLOR_WIFI_MIN = new THREE.Color('#ff0000');
+	static SIGNAL_RADIUS_MULTIPLIER = 2.0;
+
+	static TILE_SIZE = 500;
+	static DEFAULT_ZOOM = 1.0;
+	static DEFAULT_ROTATION_RAD = 0.0;
+	static PATH_LINE_WIDTH = 1.0;
+	static PATH_LINE_DASH_LENGTH = 3.0;
+
     constructor(panel) {
         super(panel, 'wifi-map');
 
-        //this.pose_graph = [];
-		//this.scan_graph = [];
-		//this.scans_to_process = {};
-
-		//this.last_pose_rendered = -1;
-		//this.last_scan_rendered = -1;
-
-		// this.clear_pose = true;
-		// this.clear_scan = true;
-
-		this.tile_size = 500;
-		this.svg_width = this.tile_size;
-		this.svg_height = this.tile_size;
+		this.svg_width = CustomWifiMapPanelWidget.TILE_SIZE;
+		this.svg_height = CustomWifiMapPanelWidget.TILE_SIZE;
 		this.svg_offset = [ -this.svg_width / 2.0, -this.svg_height / 2.0 ];
 		this.svg_content_offset = [ 0, 0 ];
 		this.render_scale = 100;
-		this.base_pos = [ this.tile_size / 2.0, this.tile_size / 2.0];
+		this.base_pos = [ CustomWifiMapPanelWidget.TILE_SIZE / 2.0, CustomWifiMapPanelWidget.TILE_SIZE / 2.0];
 
 		this.last_wifi_marker = null;
 		this.last_wifi_marker_coords = null;
 		this.last_odo = null;
 		this.last_odo_mark_coords = null;
-
-		this.color_wifi_max = new THREE.Color(0x0000ff);
-		this.color_wifi_min = new THREE.Color(0xff0000);
 
         this.sources.add(
 			"nav_msgs/msg/Odometry",
@@ -64,10 +60,8 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 
         this.sources.loadAssignedTopicsFromPanelVars(); // init sources
         
-		this.default_zoom = 1.0;
-		this.default_rot = 0.0;
-        this.zoom = this.panel.getPanelVarAsFloat('z', this.default_zoom);
-		this.rot = this.panel.getPanelVarAsInt('r', this.default_rot);
+        this.zoom = this.panel.getPanelVarAsFloat('z', CustomWifiMapPanelWidget.DEFAULT_ZOOM);
+		this.rot = this.panel.getPanelVarAsInt('r', CustomWifiMapPanelWidget.DEFAULT_ROTATION_RAD);
 		this.follow_target = this.panel.getPanelVarAsFloat('ft', true);
 		this.setFollowTarget(this.follow_target);
 
@@ -76,8 +70,7 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 		this.container_el.append(this.arrow_el);
 		this.widget_el.append(this.container_el);
 
-        //this.zoomable_tiles = new Zoomable2DTiles(this.panel, this.widget_el, 1.0, 0);
-		this.svg = d3
+		this.svg = d3 // D3.js available in this context
 			.select('#wifi-map-'+this.panel.n)
 			.append("svg")
 			.attr("id", "svg-wifi-map-"+this.panel.n)
@@ -94,23 +87,24 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 
 		this.path_points = [ [ this.base_pos[0], this.base_pos[1] ] ];
 		
-		this.line_width = 1.0;
-		this.line_dash_length = 3.0;
-		let dash = (1.0 / this.zoom) * this.line_dash_length;
+		let dash = (1.0 / this.zoom) * CustomWifiMapPanelWidget.PATH_LINE_DASH_LENGTH;
 		this.line = d3.line();
 		this.path = this.svg_group.append("path")
 			.attr("d", this.line(this.path_points))
 			.attr("fill", "none")
 			.attr("stroke", "#ffffff")
 			.attr("stroke-dasharray", dash+','+dash)
-			.style("stroke-width", (1.0 / this.zoom) * this.line_width);
-		this.path.raise(); // make sure path is above the wifi markers
+			.style("stroke-width", (1.0 / this.zoom) * CustomWifiMapPanelWidget.PATH_LINE_WIDTH);
+		this.path.raise(); // make sure odo path is above the wifi markers
 
 		this.zoom_val_btn = null; // in setMenu
 		this.follow_target_cb = null;
 
+		// helper
         this._rot = new THREE.Quaternion();
 		this._euler = new THREE.Euler();
+		this._p0 = new THREE.Vector2();
+		this._p1 = new THREE.Vector2();
 
         this.base_offset_pos = null;
 		this.base_offset_rot = null;
@@ -170,6 +164,10 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 		});
     }
 
+	onUIConfig(config) {
+		console.warn('CustomWifiMapPanelWidget got UI config:', config);
+	}
+
 	setZoom(zoom) {
 		if (zoom < 0.1) {
 			this.zoom = 0.1;
@@ -191,11 +189,10 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 			top: pos.top - (newPos.top - oldPos.top),
 		});
 
-		this.path.style("stroke-width", (1.0 / this.zoom) * this.line_width);
-		let dash = (1.0 / this.zoom) * this.line_dash_length;
+		this.path.style("stroke-width", (1.0 / this.zoom) * CustomWifiMapPanelWidget.PATH_LINE_WIDTH);
+		let dash = (1.0 / this.zoom) * CustomWifiMapPanelWidget.PATH_LINE_DASH_LENGTH;
 		this.path.attr("stroke-dasharray", dash+','+dash);
 		this.setArrowPosition();
-		//this.render_dirty = true;
 	}
 
 	setFollowTarget(state) {
@@ -213,7 +210,6 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 		super.setupMenu(menu_els); // sources
 
 		let that = this;
-
 
 		// follow target
 		let follow_target_line_el = $('<div class="menu_line"></div>');
@@ -253,21 +249,12 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 			that.setZoom(that.zoom - that.zoom / 2.0);
 		});
 		this.zoom_val_btn.click(function (ev) {
-			that.setZoom(that.default_zoom);
+			that.setZoom(CustomWifiMapPanelWidget.DEFAULT_ZOOM);
 		});
 		menu_els.push(zoom_ctrl_line_el);
 	}
 
 	clear() {
-        //this.clear_pose = true;
-        // //this.clear_scan = true;
-        // this.last_pose_rendered = -1;
-        // this.last_scan_rendered = -1;
-        // this.scan_graph = [];
-        // this.pose_graph = [];
-        // this.zoomable_tiles.clearTiles([ CustomLaserOdoPanelWidget.SCAN_LAYER, CustomLaserOdoPanelWidget.POSE_LAYER ], true);
-        // this.render_dirty = true;
-
 		this.path_points = [ [ this.base_pos[0], this.base_pos[1] ] ];
 		this.path.attr("d", this.line(this.path_points));
 		this.svg.selectAll("circle").remove();
@@ -295,12 +282,6 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 		}
 	}
 
-	distance2D(point1, point2) {
-		const dx = point2[0] - point1[0];
-		const dy = point2[1] - point1[1];
-		return Math.sqrt(dx * dx + dy * dy);
-	}
-
 	onOdometryData (topic, msg) {
 		if (this.panel.paused) return;
 
@@ -321,12 +302,17 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 		this._euler.setFromQuaternion(this._rot);
 
 		let angle_rad = this._euler.z - Math.PI/2;
-		// console.log('Got odo rot: ', angleInRadians);
 
 		let x_display = (x - this.base_offset_pos[0]) * this.render_scale;
 		let y_display = (y - this.base_offset_pos[1]) * this.render_scale;
 
-		if (!this.last_odo_mark_coords || this.distance2D([x_display, y_display], this.last_odo_mark_coords) > 1) {
+		let add_segment = true;
+		if (this.last_odo_mark_coords) {
+			this._p0.set(x_display, y_display);
+			this._p1.set(this.last_odo_mark_coords[0], this.last_odo_mark_coords[1]);
+			add_segment = this._p0.distanceTo(this._p1) > 1; // not adding new path segments when steady
+		}
+		if (add_segment) {
 			this.last_odo_mark_coords = [ x_display, y_display ];
 			let px = this.base_pos[0] + x_display;
 			let py = this.base_pos[1] + y_display;
@@ -337,33 +323,6 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 
 		this.last_odo = [ x_display, y_display, angle_rad ];
 		this.setArrowPosition();
-
-		// let ns_stamp = msg.header.stamp.sec * 1000000000 + msg.header.stamp.nanosec;
-
-		// let angular_speed = 0;
-		// if (this.pose_graph.length) {
-		// 	let ns_d = ns_stamp - this.pose_graph[this.pose_graph.length - 1][0];
-		// 	let rad_d = angle_rad - this.pose_graph[this.pose_graph.length - 1][3];
-		// 	angular_speed = (rad_d / ns_d) * 1000000000.0;
-		// }
-
-		// this.pose_graph.push([
-		// 	ns_stamp, //ns
-		// 	x - this.base_offset_pos[0],
-		// 	y - this.base_offset_pos[1],
-		// 	angle_rad,
-		// 	angular_speed,
-		// ]);
-
-		// if (this.scans_to_process[ns_stamp]) {
-		// 	console.log("Late processing scan " + ns_stamp);
-		// 	let scan = this.scans_to_process[ns_stamp];
-		// 	delete this.scans_to_process[ns_stamp];
-		// 	//this.onScanData(scan, ns_stamp, this.pose_graph.length - 1);
-		// }
-
-		// that.last_odo = odo;
-		//this.render();
 	}
 
 	onWifiData (topic, msg) {
@@ -371,29 +330,29 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 
 		let px = this.path_points[this.path_points.length-1][0];
 		let py = this.path_points[this.path_points.length-1][1];
-		let r = msg.quality * 2.0;
-		let c = this.color_wifi_min.clone().lerp(this.color_wifi_max, msg.quality/100.0);
+		let r = msg.quality * CustomWifiMapPanelWidget.SIGNAL_RADIUS_MULTIPLIER;
+		let alpha = msg.quality/100.0;
+		let c = CustomWifiMapPanelWidget.COLOR_WIFI_MIN.clone().lerp(CustomWifiMapPanelWidget.COLOR_WIFI_MAX, alpha);
+		//let opacity_hex = Math.round(alpha * 0xF0).toString(16).padStart(2, '0');
+		let opacity_hex = '33';
 
 		this.expandSVG(px+r, py+r);
 		this.expandSVG(px-r, py-r);
 
-		// if (this.last_wifi_marker) { // prevent from adding too many markers too close
-		// 	let d = ;
-		// 	// if (d < 20) {
-		// 	// 	this.last_wifi_marker.remove();
-		// 	// }
-		// }
-
-		let drop_marker = this.last_wifi_marker ? this.distance2D([ px,py ], this.last_wifi_marker_coords) > 20 : true;
+		let drop_marker = true;
+		if (this.last_wifi_marker) {
+			this._p0.set(px, py);
+			this._p1.set(this.last_wifi_marker_coords[0], this.last_wifi_marker_coords[1]);
+			drop_marker = this._p0.distanceTo(this._p1) > 20; // not adding new markers too close to the last one
+		}
 		if (drop_marker) {
 			this.last_wifi_marker_coords = [ px, py ];
 			this.last_wifi_marker = this.svg_wifi_group.append("circle")
 				.attr("cx", px)         // x center position
 				.attr("cy", py)         // y center position
 				.attr("r", r)           // radius = diameter/2 = 100/2 = 50
-				.attr("fill", '#'+c.getHexString()+'33')    // fill color
+				.attr("fill", '#'+c.getHexString()+opacity_hex)    // fill color
 				.attr("stroke", "none"); // no stroke
-			//this.path.raise(); // amke sure path is above the
 		}
 	}
 
@@ -406,9 +365,9 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 
 		 // expand left
 		if (px < -this.svg_content_offset[0]) {
-			this.svg_width += this.tile_size;
-			this.svg_offset[0] -= this.tile_size;
-			this.svg_content_offset[0] += this.tile_size;
+			this.svg_width += CustomWifiMapPanelWidget.TILE_SIZE;
+			this.svg_offset[0] -= CustomWifiMapPanelWidget.TILE_SIZE;
+			this.svg_content_offset[0] += CustomWifiMapPanelWidget.TILE_SIZE;
 			this.svg.attr('width', this.svg_width);
 			this.svg_el.css({
 				'left': this.svg_offset[0]
@@ -417,15 +376,15 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 
 		// expand right
 		} else if (px > this.svg_width - this.svg_content_offset[0]) { 
-			this.svg_width += this.tile_size;
+			this.svg_width += CustomWifiMapPanelWidget.TILE_SIZE;
 			this.svg.attr('width', this.svg_width);
 		}
 
 		// expand up
 		if (py < -this.svg_content_offset[1]) {  
-			this.svg_height += this.tile_size;
-			this.svg_offset[1] -= this.tile_size;
-			this.svg_content_offset[1] += this.tile_size;
+			this.svg_height += CustomWifiMapPanelWidget.TILE_SIZE;
+			this.svg_offset[1] -= CustomWifiMapPanelWidget.TILE_SIZE;
+			this.svg_content_offset[1] += CustomWifiMapPanelWidget.TILE_SIZE;
 			this.svg.attr('height', this.svg_height);
 			this.svg_el.css({
 				'top': this.svg_offset[1]
@@ -434,7 +393,7 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 			
 		// expand down
 		} else if (py > this.svg_height - this.svg_content_offset[1]) {
-			this.svg_height += this.tile_size;
+			this.svg_height += CustomWifiMapPanelWidget.TILE_SIZE;
 			this.svg.attr('height', this.svg_height);
 		}
 	}

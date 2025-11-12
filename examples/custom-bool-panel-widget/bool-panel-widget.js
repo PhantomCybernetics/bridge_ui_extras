@@ -10,27 +10,21 @@ export class CustomBoolPanelWidget extends SingleTypePanelWidgetBase {
     constructor(panel, topic) {
         super(panel, topic, 'bool-test');
 
+        //console.log('CustomBoolPanelWidget got initial '+this.topic+' config:', topic_config, 'ui_config: ', ui_config);
+
         this.state = false;
-        this.initialized = false;
+        // this.initialized = false;
        
         this.label_el = $('<span class="label"></span>');
         this.icon_el = $('<span class="icon"></span>');
         this.widget_el.append([ this.label_el, this.icon_el ]);
         this.enable_visual = this.panel.getPanelVarAsBool('vis', true); // get value from the panel vars, default is true
 
-        this.color_true = CustomBoolPanelWidget.DEFAULT_COLOR_TRUE; // defaults overwritten with topic config
-        this.color_false = CustomBoolPanelWidget.DEFAULT_COlOR_FALSE;
-    }
+        let config = this.client.getTopicConfig(topic);
 
-    onTopicConfig(config) {
-        console.log('CustomBoolPanelWidget got '+this.topic+' config:', config);
-        this.initialized = true;
-        if (config) {
-            if (config['color_true'])
-                this.color_true = config['color_true'];
-            if (config['color_false'])
-                this.color_false = config['color_false'];
-        }
+        this.color_true = config && config.color_true !== undefined ? config.color_true : CustomBoolPanelWidget.DEFAULT_COLOR_TRUE; // defaults overwritten with topic config
+        this.color_false = config && config.color_false !== undefined ? config.color_false : CustomBoolPanelWidget.DEFAULT_COlOR_FALSE;
+
         this.setState();
     }
 
@@ -40,8 +34,8 @@ export class CustomBoolPanelWidget extends SingleTypePanelWidgetBase {
     }
 
     setState() {
-        if (!this.initialized )
-            return; // wait for topic config
+        // if (!this.initialized )
+        //     return; // wait for topic config
 
         if (!this.enable_visual)
             this.icon_el.css('display', 'none');

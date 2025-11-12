@@ -1,0 +1,90 @@
+/*
+    preload graphics
+    a special element is created in the DOM for every CSS include
+    ID of this element is "#preloader-CSS_FILE_NAME_BASE" (same case, no extension)
+    use it to preload your graphics before they are needed
+*/
+#preloader-demo-tweaks::after {
+	position: absolute;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+	z-index: -1;
+	content:
+		url("./phantom-cybernetics-logo-white.svg")
+        ;
+}
+
+/*
+    this shows docker control buttons in the menu,
+    even when docker control is disabled (calls will fail)
+*/
+#docker_controls.control-disabled #docker_list.narrow .docker_cont_name {
+	max-width: 40%;
+}
+#docker_controls.control-disabled .docker_btns {
+	display: block;
+}
+#docker_controls.control-disabled #docker_list .docker_cont_name {
+	max-width: calc(40% - 80px);
+}
+#docker_controls.control-disabled #docker_list .docker_cont_vars {
+	left: 40%;
+	right: 100px;
+}
+BODY.hamburger #docker_controls.control-disabled #docker_list .docker_cont_vars {
+	right: 150px;
+}
+
+/*
+    about popup dialog
+*/
+#about-dialog #phntm-cybernetics-logo {
+	width: 300px;
+    aspect-ratio: calc(300 / 70);
+	float: right;
+	margin-right: 20px;
+    background-image: url('./phantom-cybernetics-logo-white.svg');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#about-dialog H2.with-phntm-cybernetics-logo {
+    float: left;
+    margin-top: 22px;
+    margin-left: 20px;
+    text-align: center;
+}
+@media (max-width: 695px) { /* if viewport is less than this, make 2 lines */
+  #about-dialog #phntm-cybernetics-logo{
+    width: calc(100% - 40px);
+    max-height: 100px;
+    margin-bottom: 10px;
+  }
+  #about-dialog H2.with-phntm-cybernetics-logo {
+    float: none;
+    margin-top: 22px;
+    margin-left: 0px;
+    margin-bottom: 10px;
+    display: block;
+  }
+}
+#about-dialog .num-peers,
+#about-dialog .key-mapping {
+	background-color: rgb(255 255 0);
+	color: black;
+	border-radius: 3px;
+	padding: 2px 4px;
+	white-space: nowrap;
+	font-weight: bold;
+	font-size: 14px;
+}
+#about-dialog .num-peers {
+    background-color: rgb(255 255 255);
+}
+BODY.desktop-ui #about-dialog .touch-only {
+	display: none;
+}
+BODY.touch-ui #about-dialog .desktop-only {
+	display: none;
+}

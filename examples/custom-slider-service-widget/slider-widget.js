@@ -15,28 +15,34 @@ export class ServiceInput_ExampleSlider extends CustomServiceInput { // must be 
     label_el = null;
     bar_el = null;
 
-    constructor(id_service, bridge_client, config_data) {
-        super(id_service, bridge_client, config_data);
+    constructor(id_service, client) {
+        super(id_service, client);
 
-        this.full_range = this.config_data.max - this.config_data.min;
-        this.use_float = this.config_data.use_float ? true : false;
-        if (this.config_data.float_decimals !== undefined)
-            this.float_decimals = this.config_data.float_decimals;
+        this.config = this.client.getServiceConfig(id_service);
+        
+        console.log('Slider has config for '+id_service, this.config);
+
+        this.min = this.config.slider_min !== undefined ? this.config.slider_min : 0.0;
+        this.max = this.config.slider_max !== undefined ? this.config.slider_max : 10.0;
+        this.full_range = this.max - this.min;
+        this.use_float = this.config.slider_use_float ? true : false;
+        if (this.config.slider_float_decimals !== undefined)
+            this.float_decimals = this.config.slider_float_decimals;
     }
 
     getCurrentValue(done_cb, err_cb) {
-        if (!this.config_data.value_read_srv) {
+        if (!this.config.value_read_service) {
             err_cb("Getter service not provided for "+this.id_service + " widget");
             return;
         }
         let that = this;
-        let timeout_sec = this.config_data.srv_timeout ? this.config_data.srv_timeout : 2.0; // timeout for the service call reply
-        this.bridge_client.serviceCall(this.config_data.value_read_srv, null, true, timeout_sec, (reply) => { // call w no payload & silent
+        let timeout_sec = this.config.timeout_sec ? this.config.timeout_sec : 2.0; // timeout for the service call reply
+        this.client.serviceCall(this.config.value_read_service, null, true, timeout_sec, (reply) => { // call w no payload & silent
             console.warn("Service widget for " + that.id_service + ' current value:', reply);
             if (reply.data !== undefined) {
                 done_cb(reply.data);
             } else {
-                err_cb("Getter service  "+this.config_data.value_read_srv+" reply missing 'data' attribute");
+                err_cb("Getter service  "+this.config.value_read_service+" reply missing 'data' attribute");
             }
         });
     }
@@ -85,20 +91,20 @@ export class ServiceInput_ExampleSlider extends CustomServiceInput { // must be 
         let span_width = this.slider_el.width();
         let click_x = ev.pageX - $(ev.target).offset().left;
         let percent = (click_x / span_width);
-        let value = this.config_data.min + (this.full_range * percent);
+        let value = this.min + (this.full_range * percent);
         if (!this.use_float)
             value = Math.round(value);
-        value = Math.max(Math.min(this.config_data.max, value), this.config_data.min);
+        value = Math.max(Math.min(this.max, value), this.min);
         let last_value_set_time = Date.now();
         this.last_value_set_time = last_value_set_time;
 
         if (send) {
             let that = this;
-            let timeout_sec = this.config_data.srv_timeout ? this.config_data.srv_timeout : 2.0; // timeout for the service call reply
-            this.bridge_client.serviceCall(this.id_service, { data: value }, true, timeout_sec, (reply) => { 
+            let timeout_sec = this.config.timeout_sec ? this.config.timeout_sec : 2.0; // timeout for the service call reply
+            this.client.serviceCall(this.id_service, { data: value }, true, timeout_sec, (reply) => { 
                 if (!reply.success) {
                     console.error('ServiceInput_ExampleSlider got error while setting value ' + value, reply);
-                    that.bridge_client.ui.showNotification('Service ' + that.id_service + ' returned error', 'error', '<pre>' + JSON.stringify(reply, null, 2) + '</pre>');
+                    that.client.ui.showNotification('Service ' + that.id_service + ' returned error', 'error', '<pre>' + JSON.stringify(reply, null, 2) + '</pre>');
                     if (this.last_value_set_time == last_value_set_time)
                         that.updateDisplay(null, true);  // err
                     return;
@@ -120,7 +126,7 @@ export class ServiceInput_ExampleSlider extends CustomServiceInput { // must be 
             return;
         }
 
-        let percent = (value - this.config_data.min) /  this.full_range;
+        let percent = (value - this.min) /  this.full_range;
         this.last_value = value; 
 
         if (this.use_float)

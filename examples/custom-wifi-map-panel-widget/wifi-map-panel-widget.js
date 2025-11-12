@@ -24,6 +24,8 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
     constructor(panel) {
         super(panel, 'wifi-map');
 
+		//console.log('CustomWifiMapPanelWidget got initial ui_config: ', ui_config);
+
 		this.svg_width = CustomWifiMapPanelWidget.TILE_SIZE;
 		this.svg_height = CustomWifiMapPanelWidget.TILE_SIZE;
 		this.svg_offset = [ -this.svg_width / 2.0, -this.svg_height / 2.0 ];
@@ -37,7 +39,7 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 		this.last_odo_mark_coords = null;
 
         this.sources.add(
-			"nav_msgs/msg/Odometry",
+			"nav_msgs/msg/Odometry",	
 			"Odometry source",
 			null,
 			1,
@@ -164,9 +166,9 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 		});
     }
 
-	onUIConfig(config) {
-		console.warn('CustomWifiMapPanelWidget got UI config:', config);
-	}
+	// onUIConfig(config) {
+	// 	console.warn('CustomWifiMapPanelWidget got UI config:', config);
+	// }
 
 	setZoom(zoom) {
 		if (zoom < 0.1) {

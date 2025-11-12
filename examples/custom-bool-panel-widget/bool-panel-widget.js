@@ -53,7 +53,7 @@ export class CustomBoolPanelWidget extends SingleTypePanelWidgetBase {
     setupMenu(menu_els) {
         console.log('menu_els: ', menu_els);
 
-        //display rotation cube
+        //display visual
         let enable_visual_line_el = $('<div class="menu_line"></div>');
         let enable_visual_label = $('<label for="enable_visual_' + this.panel.n + '">Enable visual</label>');
         let enable_visual_cb = $('<input type="checkbox" id="enable_visual_' + this.panel.n + '" ' + (this.enable_visual ? "checked " : "") + 'title="Enable visual"/> ');

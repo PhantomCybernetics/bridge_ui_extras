@@ -2,12 +2,12 @@ import { InputDriver } from 'static/input/base-driver.js'
 
 export class ExampleBoolInputDriver extends InputDriver { // must be a subclass of InputDriver
 
+    // human readable driver name
+    static label = "Example Bool Driver";
+
     // the message type to generate must be available to the Bridge node
     // (see https://docs.phntm.io/bridge/basics/custom-message-types.html)
     msg_type = 'std_msgs/msg/Bool';
-
-    // mandatory driver id (this is how you refer to the driver in bridge-client-config.yaml)
-    id_driver = "Example Bool Driver";
 
     num_axes = 5; // number of mappable axes to create
     num_buttons = 5; // number of mappable buttons to create

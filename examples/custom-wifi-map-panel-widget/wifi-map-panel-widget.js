@@ -1,4 +1,4 @@
-import { CompositePanelWidgetBase } from 'static/widgets/inc/composite-widget-base.js'
+import { CompositePanelWidgetBase } from 'https://bridge.phntm.io/static/widgets/inc/composite-widget-base.js'
 import * as THREE from "three";
 
 export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {

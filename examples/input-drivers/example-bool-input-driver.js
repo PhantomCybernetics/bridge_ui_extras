@@ -1,4 +1,4 @@
-import { InputDriver } from 'static/input/base-driver.js'
+import { InputDriver } from 'https://bridge.phntm.io/static/input/base-driver.js'
 
 export class ExampleBoolInputDriver extends InputDriver { // must be a subclass of InputDriver
 

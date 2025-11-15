@@ -38,24 +38,30 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 		this.last_odo = null;
 		this.last_odo_mark_coords = null;
 
+		let default_odometry_topic = this.client.getConfigParam('wifi_map_example.default_odometry_topic');
+		let default_laser_topic = this.client.getConfigParam('wifi_map_example.default_laser_topic');
+		let default_wifi_topic = this.client.getConfigParam('wifi_map_example.default_wifi_topic');
+
+		console.log('CustomWifiMapPanelWidget got default topics: ', [ default_odometry_topic, default_laser_topic, default_wifi_topic ]);
+
         this.sources.add(
 			"nav_msgs/msg/Odometry",	
 			"Odometry source",
-			null,
+			default_odometry_topic,
 			1,
 			(topic, msg) => this.onOdometryData(topic, msg),
 		);
 		this.sources.add(
 			"phntm_interfaces/msg/IWStatus",
 			"Wi-Fi signal source",
-			null,
+			default_wifi_topic,
 			1,
 			(topic, msg) => this.onWifiData(topic, msg),
 		);
 		this.sources.add(
 			"sensor_msgs/msg/LaserScan",
 			"Lidar source",
-			null,
+			default_laser_topic,
 			1,
 			(topic, msg) => this.onLaserData(topic, msg),
 		);

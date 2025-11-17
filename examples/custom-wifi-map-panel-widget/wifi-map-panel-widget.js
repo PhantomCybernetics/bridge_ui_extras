@@ -58,13 +58,13 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 			1,
 			(topic, msg) => this.onWifiData(topic, msg),
 		);
-		this.sources.add(
-			"sensor_msgs/msg/LaserScan",
-			"Lidar source",
-			default_laser_topic,
-			1,
-			(topic, msg) => this.onLaserData(topic, msg),
-		);
+		// this.sources.add(
+		// 	"sensor_msgs/msg/LaserScan",
+		// 	"Lidar source",
+		// 	default_laser_topic,
+		// 	1,
+		// 	(topic, msg) => this.onLaserData(topic, msg),
+		// );
 
         this.sources.loadAssignedTopicsFromPanelVars(); // init sources
         

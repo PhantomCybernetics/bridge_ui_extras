@@ -3,10 +3,10 @@ import * as THREE from "three";
 
 export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 
-    static label = "Wi-Fi Signal Strength Map";
+    static LABEL = "Wi-Fi Signal Strength Map";
 
-    static default_width = 5;
-	static default_height = 18;
+    static DEFAULT_WIDTH = 5;
+	static DEFAULT_HEIGHT = 18;
 
     static SIGNAL_LAYER = 0;
     static POSE_LAYER = 1;

@@ -1,8 +1,8 @@
-import { CustomServiceInput } from 'https://bridge.phntm.io/static/input/custom-service-input.js'
+import { ServiceInputBase } from 'https://bridge.phntm.io/static/input/service-input-base.js'
 
 // JQuery is available in this context via $
 
-export class ServiceInput_ExampleSlider extends CustomServiceInput { // must be a subclass of CustomServiceInput 
+export class ServiceInput_ExampleSlider extends ServiceInputBase { 
 
     last_value = null;
     last_value_set_time = null;

@@ -2,7 +2,9 @@ import { SingleTypePanelWidgetBase } from 'https://bridge.phntm.io/static/widget
 
 export class CustomBoolPanelWidget extends SingleTypePanelWidgetBase {
 
-    static handled_msg_types = [ 'std_msgs/msg/Bool' ];
+    static HANDLED_MSG_TYPES = [ 'std_msgs/msg/Bool' ];
+    static DEFAULT_WIDTH = 2;
+	static DEFAULT_HEIGHT = 8;
 
     static DEFAULT_COLOR_TRUE = '#00ff00';
     static DEFAULT_COlOR_FALSE = '#ff0000';

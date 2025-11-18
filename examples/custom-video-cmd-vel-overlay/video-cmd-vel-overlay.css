@@ -34,7 +34,6 @@
 
 .video_overlay .cmd-vel-overlay .dir SPAN {
     position: absolute;
-    background-color: #00000073;
     left: 5px;
     top: 5px;
     width: calc(100% - 10px);

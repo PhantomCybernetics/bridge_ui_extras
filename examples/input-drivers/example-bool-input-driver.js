@@ -1,9 +1,9 @@
-import { InputDriver } from 'https://bridge.phntm.io/static/input/base-driver.js'
+import { InputDriverBase } from 'https://bridge.phntm.io/static/input/input-driver-base.js'
 
-export class ExampleBoolInputDriver extends InputDriver { // must be a subclass of InputDriver
+export class ExampleBoolInputDriver extends InputDriverBase {
 
     // human readable driver name
-    static label = "Example Bool Driver";
+    static LABEL = "Example Bool Driver";
 
     // the message type to generate must be available to the Bridge node
     // (see https://docs.phntm.io/bridge/basics/custom-message-types.html)
@@ -52,7 +52,6 @@ export class ExampleBoolInputDriver extends InputDriver { // must be a subclass 
             data: something_pressed
         }
 
-        this.output = msg;
-        return this.output;
+        return msg;
     }
 }

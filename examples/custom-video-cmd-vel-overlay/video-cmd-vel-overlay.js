@@ -29,17 +29,17 @@ export class CustomVideoWidget_CmdVel extends VideoPuginBase {
 
         overlay.container_el = $('<div class="cmd-vel-overlay"/>');
         overlay.left_el = $('<div class="dir left"></div>');
-        overlay.left_arrow_el = $('<span/>').appendTo(overlay.left_el);
+        overlay.left_arrow_el = $('<span/>').css('background-color', CustomVideoWidget_CmdVel.COLOR_OFF).appendTo(overlay.left_el);
         overlay.right_el = $('<div class="dir right"></div>');
-        overlay.right_arrow_el = $('<span/>').appendTo(overlay.right_el);
+        overlay.right_arrow_el = $('<span/>').css('background-color', CustomVideoWidget_CmdVel.COLOR_OFF).appendTo(overlay.right_el);
         overlay.fw_el = $('<div class="dir fw"></div>');
-        overlay.fw_arrow_el = $('<span/>').appendTo(overlay.fw_el);
+        overlay.fw_arrow_el = $('<span/>').css('background-color', CustomVideoWidget_CmdVel.COLOR_OFF).appendTo(overlay.fw_el);
         overlay.back_el = $('<div class="dir back"></div>');
-        overlay.back_arrow_el = $('<span/>').appendTo(overlay.back_el);
+        overlay.back_arrow_el = $('<span/>').css('background-color', CustomVideoWidget_CmdVel.COLOR_OFF).appendTo(overlay.back_el);
         overlay.rot_left_el = $('<div class="dir rot-left"></div>');
-        overlay.rot_left_arrow_el = $('<span/>').appendTo(overlay.rot_left_el);
+        overlay.rot_left_arrow_el = $('<span/>').css('background-color', CustomVideoWidget_CmdVel.COLOR_OFF).appendTo(overlay.rot_left_el);
         overlay.rot_right_el = $('<div class="dir rot-right"></div>');
-        overlay.rot_right_arrow_el = $('<span/>').appendTo(overlay.rot_right_el);
+        overlay.rot_right_arrow_el = $('<span/>').css('background-color', CustomVideoWidget_CmdVel.COLOR_OFF).appendTo(overlay.rot_right_el);
         overlay.container_el.append([ overlay.left_el, overlay.right_el, overlay.fw_el, overlay.back_el, overlay.rot_left_el, overlay.rot_right_el ]);
         overlay.container_el.appendTo(this.video.overlay_el);
 

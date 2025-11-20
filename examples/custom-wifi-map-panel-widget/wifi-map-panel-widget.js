@@ -105,7 +105,7 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 			.style("stroke-width", (1.0 / this.zoom) * CustomWifiMapPanelWidget.PATH_LINE_WIDTH);
 		this.path.raise(); // make sure odo path is above the wifi markers
 
-		this.zoom_val_btn = null; // in setMenu
+		this.zoom_val_btn = null; // in updateMenu
 		this.follow_target_cb = null;
 
 		// helper

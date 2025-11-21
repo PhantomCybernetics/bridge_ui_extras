@@ -1,7 +1,7 @@
-import { VideoPuginBase } from "https://bridge.phntm.io/static/widgets/video/video-plugin-base.js";
+import { VideoPluginBase } from "https://bridge.phntm.io/static/widgets/video/video-plugin-base.js";
 import * as THREE from "three";
 
-export class CustomVideoWidget_CmdVel extends VideoPuginBase {
+export class CustomVideoWidget_CmdVel extends VideoPluginBase {
     static SOURCE_TOPIC_TYPE = 'geometry_msgs/msg/TwistStamped';
     static SOURCE_DESCRIPTION = 'Twist Stamped';   
     static SOURCE_DEFAULT_TOPIC = null;

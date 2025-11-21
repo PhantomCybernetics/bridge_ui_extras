@@ -1,7 +1,7 @@
-import { WorldModel3DPuginBase } from 'https://bridge.phntm.io/static/widgets/world-model-3d/world-model-plugin-base.js'
+import { WorldModel3DPluginBase } from 'https://bridge.phntm.io/static/widgets/world-model-3d/world-model-plugin-base.js'
 import * as THREE from "three";
 
-export class CustomWorldModelBatteryPlugin extends WorldModel3DPuginBase {
+export class CustomWorldModelBatteryPlugin extends WorldModel3DPluginBase {
 
     static SOURCE_TOPIC_TYPE = 'sensor_msgs/msg/BatteryState';
     static SOURCE_DESCRIPTION = 'Battery state';   

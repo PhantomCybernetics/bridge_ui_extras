@@ -61,7 +61,7 @@ export class CustomWorldModelBatteryPlugin extends WorldModel3DPluginBase {
     }
 
     onTopicData(topic, msg) {
-        if (this.world_model.panel.paused)
+        if (this.world_model.panel.paused || !this.world_model.robot_model)
             return;
         let overlay = this.overlays[topic];
         if (!overlay)

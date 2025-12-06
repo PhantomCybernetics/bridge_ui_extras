@@ -23,8 +23,7 @@
     position: absolute;
 }
 
-.panel_widget.wifi-map SVG {
-    /* background-color: #00000031; */
+.panel_widget.wifi-map svg {
     position: absolute;
 }
 

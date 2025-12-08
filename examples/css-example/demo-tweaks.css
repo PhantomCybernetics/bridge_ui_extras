@@ -63,7 +63,7 @@ BODY.hamburger #docker_controls.control-disabled #docker_list .docker_cont_vars 
   }
   #about-dialog H2.with-phntm-cybernetics-logo {
     float: none;
-    margin-top: 22px;
+    margin-top: 0px;
     margin-left: 0px;
     margin-bottom: 10px;
     display: block;

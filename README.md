@@ -11,7 +11,7 @@ If `uiHost` in the config file is set to 'auto', the server tries to detect the 
 
 The server publishes all files from ./examples on two URLs:
 1. Directly on e.g. `https://ui-extras.phntm.io/custom-service-slider-widget/custom-service-slider-widget.js`
-2. On a CDN-friendly URL prefidex by /v/ and the latest Git commit hash, e.g. `https://ui-extras.phntm.io/v/1122db9/custom-service-slider-widget/custom-service-slider-widget.js` which is then distributed via CDN and available on e.g. `https://ui-extras-cdn.phntm.io/1122db9/custom-service-slider-widget/custom-service-slider-widget.js`.
+2. On a CDN-friendly URL prefixed by `/v/latest_commit_hash`, e.g. `https://ui-extras.phntm.io/v/1122db9/custom-service-slider-widget/custom-service-slider-widget.js` which is then distributed via CDN and available on e.g. `https://ui-extras-cdn.phntm.io/1122db9/custom-service-slider-widget/custom-service-slider-widget.js`.
 
 Using a CDN is highly recommended in production to speed up load times. The UI waits for every included JavaScript and CSS file to load, so a single file can significantly reduce overall responsiveness.
 

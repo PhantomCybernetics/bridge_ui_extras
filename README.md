@@ -34,6 +34,7 @@ then:
 
 ```bash
 git clone git@github.com:PhantomCybernetics/bridge_ui_extras.git bridge_ui_extras
+sudo git config --global --add safe.directory `pwd`/bridge_ui_extras # necessary for reading git commit hashes
 cd bridge_ui_extras
 npm install
 cp config.example.json config.json # examine the config, set server port, etc

@@ -10,8 +10,8 @@ The provided Node.js server sends the correct Access-Control-Allow-Origin header
 If `uiHost` in the config file is set to 'auto', the server tries to detect the UI's domain automatically from the 'origin' header of each request (this may not always work with some browsers that don't send this header, or if CDN is used). Setting `uiHost` to `'auto'` is not recommended in production where you should always specify the exact hostname of the Bridge UI you are targeting.
 
 The server publishes all files from ./examples on two URLs:
-1. Directly on e.g. `https://ui-extras.phntm.io/custom-service-slider-widget/custom-service-slider-widget.js`
-2. On a CDN-friendly URL prefixed by `/v/latest_commit_hash`, e.g. `https://ui-extras.phntm.io/v/1122db9/custom-service-slider-widget/custom-service-slider-widget.js` which is then distributed via CDN and available on e.g. `https://ui-extras-cdn.phntm.io/1122db9/custom-service-slider-widget/custom-service-slider-widget.js`.
+1. Directly on e.g. `https://ui-extras.phntm.io/custom-slider-service-widget/slider-widget.js`
+2. On a CDN-friendly URL prefixed by `/v/latest_commit_hash`, e.g. `https://ui-extras.phntm.io/v/1122db9/custom-slider-service-widget/slider-widget.js` which is then distributed via CDN and available on e.g. `https://ui-extras-cdn.phntm.io/1122db9/custom-slider-service-widget/slider-widget.js`.
 
 Using a CDN is highly recommended in production to speed up load times. The UI waits for every included JavaScript and CSS file to load, so a single file can significantly reduce overall responsiveness.
 
@@ -57,7 +57,7 @@ If you're using AWS Load Balander that terminates SSL encryption, handles certif
 node server.js
 ```
 
-The files from the `examples` folder should be available at e.g. `https://localhost:443/input-drivers/custom-input-driver-example.js` and e.g. `https://localhost:443/1122db9/input-drivers/custom-input-driver-example.js` (where '1122db9' is the latest Git commit hash)
+The files from the `examples` folder should be available at e.g. `https://localhost:443/custom-slider-service-widget/slider-widget.js` and e.g. `https://localhost:443/v/1122db9/custom-slider-service-widget/slider-widget.js` (where '1122db9' is the latest Git commit hash)
 
 ## Add as a system service
 ```bash

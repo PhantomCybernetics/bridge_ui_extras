@@ -10,17 +10,17 @@ The provided Node.js server sends the correct Access-Control-Allow-Origin header
 If `uiHost` in the config file is set to 'auto', the server tries to detect the UI's domain automatically from the 'origin' header of each request (this may not always work with some browsers that don't send this header, or if CDN is used). Setting `uiHost` to `'auto'` is not recommended in production where you should always specify the exact hostname of the Bridge UI you are targeting.
 
 The server publishes all files from ./examples on two URLs:
-1/ Directly on e.g. `https://ui-extras.phntm.io/custom-service-slider-widget/custom-service-slider-widget.js`
-2/ On a CDN-friendly URL prefidex by /v/ and the latest Git commit hash, e.g. `https://ui-extras.phntm.io/v/1122db9/custom-service-slider-widget/custom-service-slider-widget.js` which is then distributed via CDN and available on e.g. `https://ui-extras-cdn.phntm.io/1122db9/custom-service-slider-widget/custom-service-slider-widget.js`.
+1. Directly on e.g. `https://ui-extras.phntm.io/custom-service-slider-widget/custom-service-slider-widget.js`
+2. On a CDN-friendly URL prefidex by /v/ and the latest Git commit hash, e.g. `https://ui-extras.phntm.io/v/1122db9/custom-service-slider-widget/custom-service-slider-widget.js` which is then distributed via CDN and available on e.g. `https://ui-extras-cdn.phntm.io/1122db9/custom-service-slider-widget/custom-service-slider-widget.js`.
 
-Using a CDN is highly recommended in production to speed up load times. The UI waits for every included JavaScript and CSS file to load, so a single file can significantly reduce overall load times.
+Using a CDN is highly recommended in production to speed up load times. The UI waits for every included JavaScript and CSS file to load, so a single file can significantly reduce overall responsiveness.
 
 When referring to core Phntm Bridge UI classes in your code, you need to use specifiers exposed by the UI's importmap, as shown in the [UI API Documentartion](https://docs.phntm.io/bridge/ui-api-docs/index).
 
 > [!TIP]
 > If you don't host your own Phntm Bridge UI, simply leave the `uiHost` to `'https://bridge.phntm.io'`.
-> Indeed, you need to host this server on a publicly accessible machine to make your extensions available to user on the internet.
-> However, localhost will also work for development and testing.
+> You should run this server on a publicly accessible machine to make your extensions available to user on the internet,
+> however, localhost will also work for development and testing.
 
 ## Install the Node.js Server
 

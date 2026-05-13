@@ -1,4 +1,4 @@
-import { WorldModel3DPluginBase } from 'https://bridge.phntm.io/static/widgets/world-model-3d/world-model-plugin-base.js'
+import { WorldModel3DPluginBase } from 'widgets/world-model-plugin-base'
 import * as THREE from "three";
 
 export class CustomWorldModelBatteryPlugin extends WorldModel3DPluginBase {

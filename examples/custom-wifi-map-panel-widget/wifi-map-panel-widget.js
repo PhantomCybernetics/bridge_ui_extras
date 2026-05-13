@@ -1,4 +1,4 @@
-import { CompositePanelWidgetBase } from 'https://bridge.phntm.io/static/widgets/inc/composite-widget-base.js'
+import { CompositePanelWidgetBase } from 'widgets/composite-widget-base'
 import * as THREE from "three";
 
 export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
@@ -66,7 +66,7 @@ export class CustomWifiMapPanelWidget extends CompositePanelWidgetBase {
 		// 	(topic, msg) => this.onLaserData(topic, msg),
 		// );
 
-        this.sources.loadAssignedTopicsFromPanelVars(); // init sources
+        this.sources.init(); // init sources
         
         this.zoom = this.panel.getPanelVarAsFloat('z', CustomWifiMapPanelWidget.DEFAULT_ZOOM);
 		this.rot = this.panel.getPanelVarAsInt('r', CustomWifiMapPanelWidget.DEFAULT_ROTATION_RAD);

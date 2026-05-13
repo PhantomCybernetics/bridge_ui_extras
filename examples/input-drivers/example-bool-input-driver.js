@@ -1,4 +1,4 @@
-import { InputDriverBase } from 'https://bridge.phntm.io/static/input/input-driver-base.js'
+import { InputDriverBase } from 'input/input-driver-base'
 
 export class ExampleBoolInputDriver extends InputDriverBase {
 

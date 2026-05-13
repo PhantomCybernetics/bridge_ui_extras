@@ -1,4 +1,4 @@
-import { VideoPluginBase } from "https://bridge.phntm.io/static/widgets/video/video-plugin-base.js";
+import { VideoPluginBase } from "widgets/video-plugin-base";
 import * as THREE from "three";
 
 export class CustomVideoWidget_CmdVel extends VideoPluginBase {

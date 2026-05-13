@@ -1,4 +1,4 @@
-import { ServiceInputBase } from 'https://bridge.phntm.io/static/input/service-input-base.js'
+import { ServiceInputBase } from 'input/service-input-base'
 
 // JQuery is available in this context via $
 
